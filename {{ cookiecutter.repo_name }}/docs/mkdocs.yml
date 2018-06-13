@@ -1,0 +1,47 @@
+# Project Information
+site_name: '{{ cookiecutter.project_name }}'
+site_description: '{{ cookiecutter.description }}'
+site_author: '{{ cookiecutter.author_name }}'
+
+docs_dir: 'src'
+site_dir: 'html/mkdocs'
+
+# Repository
+repo_name: 'transfers'
+repo_url: '{{ cookiecutter.repo_url }}'
+edit_uri: 'blob/master/docs/src/'
+
+# Layout
+
+# Theme
+theme:
+    feature:
+        tabs: false
+    logo:
+        icon: 'local_library'
+    name: 'material'
+    language: 'en'
+    palette:
+        primary: 'orange'
+        accent:  'light blue'
+    font:
+        text: 'Nunito Sans'
+        code: 'Fira Code'
+
+extra_javascript:
+    - aux/helpers.js
+    - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+markdown_extensions:
+    - admonition
+    - codehilite:
+        linenums: true
+    - footnotes
+    - meta
+    - pymdownx.arithmatex
+    - pymdownx.details
+    - pymdownx.smartsymbols
+    - pymdownx.tasklist(custom_checkbox=true)
+    - pymdownx.tilde
+    - toc:
+        permalink: true

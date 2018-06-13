@@ -3,13 +3,33 @@
 
 # external requirements
 click
-Sphinx
 coverage
-awscli
 flake8
-python-dotenv>=0.5.1
-{% if cookiecutter.python_interpreter != 'python3' %}
+arrow>=0.12.1
+autopep8>=1.3.5
+cookiecutter>=1.6.0
+dask>=0.17.2
+distributed>=1.21.6
+docutils>=0.14
+fastparquet>=0.1.5
+gmail-download>=0.0.1
+ipykernel>=4.8.0
+ipython>=6.2.1
+jupyter>=1.0.0
+matplotlib>=2.1.2
+mkdocs>=0.17.3
+mkdocs-material>=2.7.3
+numpy>=1.14.2
+pyarrow>=0.9.0
+pytz>=2017.3
+notebook>=5.4.0
+pandas>=0.23.0
+pycodestyle>=2.3.1
+pydocstyle>=2.1.1
+seaborn>=0.8.1
+Sphinx>=1.6.6
+statsmodels>=0.8.0
+tabulate>=0.8.2
+yapf>=0.21.0
 
-# backwards compatibility
-pathlib2
-{% endif %}
+-e git+https://github.com/kylebarron/gmail_download

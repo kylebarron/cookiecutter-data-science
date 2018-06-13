@@ -1,0 +1,3 @@
+[submodule "{{ cookiecutter.repo_name }}/lib"]
+	path = {{ cookiecutter.repo_name }}/lib
+	url = https://github.com/kylebarron/lib
