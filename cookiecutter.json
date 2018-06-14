@@ -5,6 +5,7 @@
     "repo_url": "https://github.com/{{ cookiecutter.author_name.lower().replace(' ', '_')}}/{{ cookiecutter.repo_name }}",
     "description": "A short description of the project.",
     "open_source_license": ["MIT", "BSD-3-Clause", "No license file"],
+    "add_lib_submodule": ["yes", "no"],
     "medicare_project": ["yes", "no"],
     "rclone_remote_path": ["dropbox:{{ cookiecutter.repo_name }}", "Don't use rclone"]
 }
