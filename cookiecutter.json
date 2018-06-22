@@ -7,5 +7,6 @@
     "open_source_license": ["MIT", "BSD-3-Clause", "No license file"],
     "add_lib_submodule": ["yes", "no"],
     "medicare_project": ["yes", "no"],
-    "rclone_remote_path": ["dropbox:{{ cookiecutter.repo_name }}", "Don't use rclone"]
+    "use_rclone_to_sync_with_dropbox": ["yes", "no"],
+    "rclone_remote_path": "dropbox:{{ cookiecutter.repo_name }}"
 }

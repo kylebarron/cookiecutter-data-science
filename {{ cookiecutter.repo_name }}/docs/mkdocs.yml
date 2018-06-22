@@ -12,6 +12,9 @@ repo_url: '{{ cookiecutter.repo_url }}'
 edit_uri: 'blob/master/docs/src/'
 
 # Layout
+pages:
+    - Introduction: 'index.md'
+    - Glossary: 'glossary.md'
 
 # Theme
 theme:
