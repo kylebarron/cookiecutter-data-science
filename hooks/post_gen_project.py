@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+from pathlib import Path
 try:
     from git import Repo
 except ImportError:
@@ -19,6 +20,17 @@ def main():
         git.submodule('add', 'https://github.com/kylebarron/lib')
         os.system('git submodule update --init --recursive')
         # repo.submodule_update(init=True, recursive=True)
+
+    out = Path('out')
+    if ('yes' == '{{ cookiecutter.medicare_project }}'):
+        # Make `tab` and `fig` under percent directories
+        for pct in ['0001', '01', '05', '20', '100']:
+            (out / pct / 'fig').mkdir(parents=True, exist_ok=True)
+            (out / pct / 'tab').mkdir(parents=True, exist_ok=True)
+    else:
+        # Make top-level `tab` and `fig` directories
+        (out / 'fig').mkdir(parents=True, exist_ok=True)
+        (out / 'tab').mkdir(parents=True, exist_ok=True)
 
 def remove_file(filepath):
     os.remove(os.path.join(PROJECT_DIRECTORY, filepath))
