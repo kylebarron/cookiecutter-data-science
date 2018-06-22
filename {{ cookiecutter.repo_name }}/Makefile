@@ -1,14 +1,14 @@
-#################################################################################
-# GLOBALS                                                                       #
-#################################################################################
+################################################################################
+# GLOBALS                                                                      #
+################################################################################
 
 SHELL := /bin/bash
 PROJECT_DIR := "$(shell pwd -P)"
 PROJECT_NAME = {{ cookiecutter.repo_name }}
 
-#################################################################################
-# COMMANDS                                                                      #
-#################################################################################
+################################################################################
+# COMMANDS                                                                     #
+################################################################################
 
 .PHONY: clean dependencies
 
@@ -33,9 +33,9 @@ local/bin/rclone:
 	unzip -j /tmp/rclone.zip "rclone-v*-linux-amd64/rclone" -d local/bin/
 	unzip -j /tmp/rclone.zip "rclone-v*-linux-amd64/rclone.1" -d local/share/
 
-#################################################################################
-# PROJECT RULES                                                                 #
-#################################################################################
+################################################################################
+# PROJECT RULES                                                                #
+################################################################################
 
 .PHONY: all code report lit_review docs emails sync
 ## Run everything
@@ -58,8 +58,7 @@ report:
 	@echo "Generating report"
 
 ## Generate literature review
-lit_review:
-	$(MAKE) writeup/lit_review/lit_review.pdf
+lit_review: writeup/pdf/lit_review.pdf writeup/docx/lit_review.docx writeup/html/lit_review.html
 
 ## Generate documentation
 docs:
@@ -73,10 +72,66 @@ sync:
 		--exclude "admin/emails/**" \
 		--exclude "local/**"
 
+################################################################################
+# Detailed Rules                                                               #
+################################################################################
 
-#################################################################################
-# Self Documenting Commands                                                     #
-#################################################################################
+
+
+writeup/pdf/lit_review.pdf: writeup/src/lit_review.md bibliography.bib
+	pandoc writeup/src/lit_review.md \
+	-o writeup/html/lit_review.html \
+	-V title:"{{ cookiecutter.project_name }} Literature Review" \
+	-V author:"{{ cookiecutter.author_name }}" \
+	-V date:"$(shell date +"%B %e, %Y")" \
+	--toc \
+	--filter=$(PANDOC_SVG) \
+	-V lof:"true" \
+	-V toc-depth:"2" \
+	-V citecolor:"blue" \
+	--bibliography=bibliography.bib \
+	-V geometry:"margin=1.5in" \
+	--standalone
+
+writeup/docx/lit_review.docx: writeup/src/lit_review.md bibliography.bib
+	pandoc writeup/src/lit_review.md \
+	-o writeup/html/lit_review.html \
+	-V title:"{{ cookiecutter.project_name }} Literature Review" \
+	-V author:"{{ cookiecutter.author_name }}" \
+	-V date:"$(shell date +"%B %e, %Y")" \
+	--toc \
+	--filter=$(PANDOC_SVG) \
+	-V lof:"true" \
+	-V toc-depth:"2" \
+	-V citecolor:"blue" \
+	--bibliography=bibliography.bib \
+	--standalone
+
+writeup/html/lit_review.html: writeup/src/lit_review.md bibliography.bib
+	pandoc writeup/src/lit_review.md \
+	-o writeup/html/lit_review.html \
+	-V title:"{{ cookiecutter.project_name }} Literature Review" \
+	-V author:"{{ cookiecutter.author_name }}" \
+	-V date:"$(shell date +"%B %e, %Y")" \
+	--toc \
+	--filter=$(PANDOC_SVG) \
+	-V lof:"true" \
+	-V toc-depth:"2" \
+	-V citecolor:"blue" \
+	--bibliography=bibliography.bib \
+	--standalone \
+	--self-contained \
+	-H lib/pandoc-config/aux/html/gh-markdown-header.html \
+	-B lib/pandoc-config/aux/html/gh-markdown-start.html \
+	-A lib/pandoc-config/aux/html/gh-markdown-end.html \
+	--mathjax
+
+
+
+
+################################################################################
+# Self Documenting Commands                                                    #
+################################################################################
 
 .DEFAULT_GOAL := help
 
