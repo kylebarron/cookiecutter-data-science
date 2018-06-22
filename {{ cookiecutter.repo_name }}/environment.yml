@@ -1,12 +1,15 @@
 name: '{{ cookiecutter.repo_name }}'
 channels:
     - conda-forge
+    - r
 dependencies:
+    # Python Dependencies
     - arrow>=0.12.1
     - cookiecutter>=1.6.0
     - cython>=0.28.3
     - dask>=0.18.0
     - fastparquet>=0.1.5
+    - flake8>=3.5.0
     - gitpython>=2.1.10
     - ipykernel>=4.8.2
     - joblib
@@ -21,6 +24,7 @@ dependencies:
     - pip
     - pyarrow
     - pydocstyle>=2.1.1
+    - pyflakes>=2.0.0
     - python-dateutil>=2.7.3
     - python=3.6
     - pytz>=2018.4
@@ -31,6 +35,8 @@ dependencies:
     - tabulate>=0.8.2
     - texlive-core
     - yapf>=0.22.0
+    # R Dependencies
+    - r
     - pip:
         - git+https://github.com/kylebarron/gmail_download
         - git+https://github.com/kylebarron/medicare_utils
