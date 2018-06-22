@@ -1,0 +1,44 @@
+name: '{{ cookiecutter.repo_name }}'
+channels:
+    - conda-forge
+dependencies:
+    - arrow>=0.12.1
+    - cookiecutter>=1.6.0
+    - cython>=0.28.3
+    - dask>=0.18.0
+    - fastparquet>=0.1.5
+    - gitpython>=2.1.10
+    - ipykernel>=4.8.2
+    - joblib
+    - jupyter
+    - matplotlib>=2.2.2
+    - mkdocs>=0.17.4
+    - mypy
+    - numpy>=1.14.5
+    - pandas>=0.23.1
+    - pandoc>=2.2.1
+    - pandocfilters
+    - pip
+    - pyarrow
+    - pydocstyle>=2.1.1
+    - python-dateutil>=2.7.3
+    - python=3.6
+    - pytz>=2018.4
+    - seaborn>=0.8.1
+    - snappy
+    - sphinx>=1.7.5
+    - statsmodels>=0.9.0
+    - tabulate>=0.8.2
+    - texlive-core
+    - yapf>=0.22.0
+    - pip:
+        - git+https://github.com/kylebarron/gmail_download
+        - git+https://github.com/kylebarron/medicare_utils
+        # Using pweave from my account is necessary so that Pweave exits with
+        # return code 1 if the build didn't complete successfully. As of
+        # 6/20/2018, this has not been merged back into main Pweave. See
+        # https://github.com/mpastell/Pweave/issues/111
+        - git+https://github.com/kylebarron/pweave
+        - mkdocs-material>=2.9.1
+        - pyls>=0.19.0
+
