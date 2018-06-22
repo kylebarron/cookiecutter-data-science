@@ -1,4 +1,5 @@
 SHELL := /bin/bash
+PROJECT_DIR := "$(shell cd ../ && pwd -P)"
 .PHONY: all docx pdf mkdocs-html pandoc-html
 
 all:
@@ -25,9 +26,9 @@ pdf/documentation.pdf: $(shell find src -name '*.md') ../bibliography.bib
 	 	src/glossary.md \
 		src/references.md \
 		-o pdf/documentation.pdf \
-		-V title:"Patient Transfers" \
+		-V title:"{{ cookiecutter.project_name }}" \
 		-V date:"$(shell date +"%B %e, %Y")" \
-		-V author:"Kyle Barron" \
+		-V author:"{{ cookiecutter.author_name }}" \
 		--toc \
 		--bibliography=../bibliography.bib \
 		--standalone \
@@ -44,9 +45,9 @@ docx/documentation.docx: $(shell find src -name '*.md') ../bibliography.bib
 	 	src/glossary.md \
 		src/references.md \
 		-o docx/documentation.docx \
-		-V title:"Patient Transfers" \
+		-V title:"{{ cookiecutter.project_name }}" \
 		-V date:"$(shell date +"%B %e, %Y")" \
-		-V author:"Kyle Barron" \
+		-V author:"{{ cookiecutter.author_name }}" \
 		--toc \
 		--bibliography=../bibliography.bib \
 		--standalone \
@@ -73,17 +74,15 @@ html/documentation.html: $(shell find src) ../bibliography.bib
 	 	src/glossary.md \
 		src/references.md \
 		-o html/documentation.html \
-		-V title:"Patient Transfers" \
+		-V title:"{{ cookiecutter.project_name }}" \
 		-V date:"$(shell date +"%B %e, %Y")" \
-		-V author:"Kyle Barron" \
+		-V author:"{{ cookiecutter.author_name }}" \
 		--toc \
 		--bibliography=../bibliography.bib \
 		--standalone \
-		-H src/aux/css-start.html \
-		-H src/aux/github-markdown.css \
-		-H src/aux/css-end.html \
-		-B src/aux/gh-markdown-start.html \
-		-A src/aux/gh-markdown-end.html \
+		-H $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-header.html \
+		-B $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-start.html \
+		-A $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-end.html \
 		--mathjax \
 		--syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/sas.xml) \
 		--syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/stata.xml)
