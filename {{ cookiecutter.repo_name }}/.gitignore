@@ -1,3 +1,14 @@
+# PDF versions of figures
+# I export all images as SVGs, then use the Pandoc-svg.py filter to convert them
+# to PDFs. But I don't need all of the images in Git as both formats
+#
+# This should match all of:
+# out/fig/image.pdf
+# out/fig/more/directories/image.pdf
+# out/20/fig/image.pdf
+# out/20/fig/more/directories/image.pdf
+out/**/fig/**/*.pdf
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
