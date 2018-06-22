@@ -4,7 +4,34 @@
 
 SHELL := /bin/bash
 PROJECT_DIR := "$(shell pwd -P)"
-PROJECT_NAME = {{ cookiecutter.repo_name }}
+PROJECT_NAME := {{ cookiecutter.repo_name }}
+DATA_DIR := $(PROJECT_DIR)/data
+
+EVAL_GLOBALS := PROJECT_DIR=$(PROJECT_DIR) DATA_DIR=$(DATA_DIR)
+RUN_STATA := $(EVAL_GLOBALS) bash $(PROJECT_DIR)/lib/statab.sh
+RUN_PYTHON := $(EVAL_GLOBALS) python
+
+PANDOC_INCLUDE := perl -ne 's/^\[(.+)\].*/`cat $1`/e;print'
+
+PANDOC_OPTS := -V author:"{{ cookiecutter.author_name }}"
+PANDOC_OPTS += -V date:"$(shell date +"%B %e, %Y")"
+PANDOC_OPTS += --toc
+PANDOC_OPTS += --filter=$(PROJECT_DIR)/lib/pandoc-config/filters/pandoc-svg.py
+PANDOC_OPTS += -V lof:"true"
+PANDOC_OPTS += -V toc-depth:"2"
+PANDOC_OPTS += -V citecolor:"blue"
+PANDOC_OPTS += --bibliography=$(PROJECT_DIR)/bibliography.bib
+PANDOC_OPTS += --standalone
+PANDOC_OPTS += --syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/stata.xml)
+PANDOC_OPTS += --syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/sas.xml)
+
+PANDOC_HTML_OPTS := $(PANDOC_OPTS) --self-contained
+PANDOC_HTML_OPTS += -H $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-header.html
+PANDOC_HTML_OPTS += -B $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-start.html
+PANDOC_HTML_OPTS += -A $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-end.html
+PANDOC_HTML_OPTS += --mathjax
+
+PANDOC_PDF_OPTS := $(PANDOC_OPTS) -V geometry:"margin=1.5in"
 
 ################################################################################
 # COMMANDS                                                                     #
@@ -76,55 +103,36 @@ sync:
 # Detailed Rules                                                               #
 ################################################################################
 
+writeup/pdf/report.pdf: writeup/src/report.md bibliography.bib
+	pandoc writeup/src/report.md -o writeup/pdf/report.pdf \
+	-V title:"{{ cookiecutter.project_name }} Literature Review" \
+	$(PANDOC_PDF_OPTS)
+
+writeup/docx/report.docx: writeup/src/report.md bibliography.bib
+	pandoc writeup/src/report.md -o writeup/docx/report.docx \
+	-V title:"{{ cookiecutter.project_name }} Literature Review" \
+	$(PANDOC_OPTS)
+
+writeup/html/report.html: writeup/src/report.md bibliography.bib
+	pandoc writeup/src/report.md -o writeup/html/report.html \
+	-V title:"{{ cookiecutter.project_name }} Literature Review" \
+	$(PANDOC_HTML_OPTS)
 
 
 writeup/pdf/lit_review.pdf: writeup/src/lit_review.md bibliography.bib
-	pandoc writeup/src/lit_review.md \
-	-o writeup/html/lit_review.html \
+	pandoc writeup/src/lit_review.md -o writeup/pdf/lit_review.pdf \
 	-V title:"{{ cookiecutter.project_name }} Literature Review" \
-	-V author:"{{ cookiecutter.author_name }}" \
-	-V date:"$(shell date +"%B %e, %Y")" \
-	--toc \
-	--filter=$(PANDOC_SVG) \
-	-V lof:"true" \
-	-V toc-depth:"2" \
-	-V citecolor:"blue" \
-	--bibliography=bibliography.bib \
-	-V geometry:"margin=1.5in" \
-	--standalone
+	$(PANDOC_PDF_OPTS)
 
 writeup/docx/lit_review.docx: writeup/src/lit_review.md bibliography.bib
-	pandoc writeup/src/lit_review.md \
-	-o writeup/html/lit_review.html \
+	pandoc writeup/src/lit_review.md -o writeup/docx/lit_review.docx \
 	-V title:"{{ cookiecutter.project_name }} Literature Review" \
-	-V author:"{{ cookiecutter.author_name }}" \
-	-V date:"$(shell date +"%B %e, %Y")" \
-	--toc \
-	--filter=$(PANDOC_SVG) \
-	-V lof:"true" \
-	-V toc-depth:"2" \
-	-V citecolor:"blue" \
-	--bibliography=bibliography.bib \
-	--standalone
+	$(PANDOC_OPTS)
 
 writeup/html/lit_review.html: writeup/src/lit_review.md bibliography.bib
-	pandoc writeup/src/lit_review.md \
-	-o writeup/html/lit_review.html \
+	pandoc writeup/src/lit_review.md -o writeup/html/lit_review.html \
 	-V title:"{{ cookiecutter.project_name }} Literature Review" \
-	-V author:"{{ cookiecutter.author_name }}" \
-	-V date:"$(shell date +"%B %e, %Y")" \
-	--toc \
-	--filter=$(PANDOC_SVG) \
-	-V lof:"true" \
-	-V toc-depth:"2" \
-	-V citecolor:"blue" \
-	--bibliography=bibliography.bib \
-	--standalone \
-	--self-contained \
-	-H lib/pandoc-config/aux/html/gh-markdown-header.html \
-	-B lib/pandoc-config/aux/html/gh-markdown-start.html \
-	-A lib/pandoc-config/aux/html/gh-markdown-end.html \
-	--mathjax
+	$(PANDOC_HTML_OPTS)
 
 
 

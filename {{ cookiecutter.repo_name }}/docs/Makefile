@@ -1,5 +1,28 @@
 SHELL := /bin/bash
 PROJECT_DIR := "$(shell cd ../ && pwd -P)"
+
+PANDOC_INCLUDE := perl -ne 's/^\[(.+)\].*/`cat $1`/e;print'
+
+PANDOC_OPTS := -V author:"{{ cookiecutter.author_name }}"
+PANDOC_OPTS += -V date:"$(shell date +"%B %e, %Y")"
+PANDOC_OPTS += --toc
+PANDOC_OPTS += --filter=$(PROJECT_DIR)/lib/pandoc-config/filters/pandoc-svg.py
+PANDOC_OPTS += -V lof:"true"
+PANDOC_OPTS += -V toc-depth:"2"
+PANDOC_OPTS += -V citecolor:"blue"
+PANDOC_OPTS += --bibliography=$(PROJECT_DIR)/bibliography.bib
+PANDOC_OPTS += --standalone
+PANDOC_OPTS += --syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/stata.xml)
+PANDOC_OPTS += --syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/sas.xml)
+
+PANDOC_HTML_OPTS := $(PANDOC_OPTS) --self-contained
+PANDOC_HTML_OPTS += -H $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-header.html
+PANDOC_HTML_OPTS += -B $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-start.html
+PANDOC_HTML_OPTS += -A $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-end.html
+PANDOC_HTML_OPTS += --mathjax
+
+PANDOC_PDF_OPTS := $(PANDOC_OPTS) -V geometry:"margin=1.5in"
+
 .PHONY: all docx pdf mkdocs-html pandoc-html
 
 all:
@@ -21,71 +44,34 @@ pandoc-html:
 	$(MAKE) html/documentation.html
 
 pdf/documentation.pdf: $(shell find src -name '*.md') ../bibliography.bib
-	pandoc \
-		src/index.md \
-	 	src/glossary.md \
-		src/references.md \
+	pandoc src/index.md src/glossary.md src/references.md \
 		-o pdf/documentation.pdf \
 		-V title:"{{ cookiecutter.project_name }}" \
-		-V date:"$(shell date +"%B %e, %Y")" \
-		-V author:"{{ cookiecutter.author_name }}" \
-		--toc \
-		--bibliography=../bibliography.bib \
-		--standalone \
-		-V geometry:"margin=1in" \
-		--syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/sas.xml) \
-		--syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/stata.xml)
+		$(PANDOC_PDF_OPTS)
 	{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
 	rclone sync pdf/documentation.pdf {{ cookiecutter.rclone_remote_path }}/docs/pdf/
 	{% endif %}
 
 docx/documentation.docx: $(shell find src -name '*.md') ../bibliography.bib
-	pandoc \
-		src/index.md \
-	 	src/glossary.md \
-		src/references.md \
+	pandoc src/index.md src/glossary.md src/references.md \
 		-o docx/documentation.docx \
 		-V title:"{{ cookiecutter.project_name }}" \
-		-V date:"$(shell date +"%B %e, %Y")" \
-		-V author:"{{ cookiecutter.author_name }}" \
-		--toc \
-		--bibliography=../bibliography.bib \
-		--standalone \
-		--syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/sas.xml) \
-		--syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/stata.xml)
+		$(PANDOC_OPTS)
 	{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
 	rclone sync docx/documentation.docx {{ cookiecutter.rclone_remote_path }}/docs/docx/
 	{% endif %}
 
 html/mkdocs/index.html: $(shell find src) ../bibliography.bib
-	if command -v mkdocs 2>/dev/null; then \
-        mkdocs build; \
-    else \
-        pip install mkdocs mkdocs-material; \
-		mkdocs build; \
-    fi
+	mkdocs build
 	{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
 	rclone sync html/mkdocs/ {{ cookiecutter.rclone_remote_path }}/docs/html/mkdocs/
 	{% endif %}
 
 html/documentation.html: $(shell find src) ../bibliography.bib
-	pandoc \
-		src/index.md \
-	 	src/glossary.md \
-		src/references.md \
+	pandoc src/index.md src/glossary.md src/references.md \
 		-o html/documentation.html \
 		-V title:"{{ cookiecutter.project_name }}" \
-		-V date:"$(shell date +"%B %e, %Y")" \
-		-V author:"{{ cookiecutter.author_name }}" \
-		--toc \
-		--bibliography=../bibliography.bib \
-		--standalone \
-		-H $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-header.html \
-		-B $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-start.html \
-		-A $(PROJECT_DIR)/lib/pandoc-config/aux/html/gh-markdown-end.html \
-		--mathjax \
-		--syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/sas.xml) \
-		--syntax-definition=<(curl -s https://raw.githubusercontent.com/kylebarron/highlight-sas-stata/master/xml/stata.xml)
+		$(PANDOC_HTML_OPTS)
 	{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
 	rclone sync html/documentation.html {{ cookiecutter.rclone_remote_path }}/docs/html/
 	{% endif %}
