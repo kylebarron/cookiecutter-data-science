@@ -16,8 +16,7 @@ $ pip install cookiecutter
 or
 
 ``` bash
-$ conda config --add channels conda-forge
-$ conda install cookiecutter
+$ conda install cookiecutter -c conda-forge
 ```
 
 ### To start a new project, run:
