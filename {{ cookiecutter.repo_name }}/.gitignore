@@ -9,6 +9,12 @@
 # out/20/fig/more/directories/image.pdf
 out/**/fig/**/*.pdf
 
+data/
+local/
+.DS_Store
+.ropeproject/
+.lastlogin
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
