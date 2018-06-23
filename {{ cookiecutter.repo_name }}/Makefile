@@ -66,11 +66,7 @@ local/bin/rclone:
 
 .PHONY: all code report lit_review docs emails sync
 ## Run everything
-all:
-	$(MAKE) code
-	$(MAKE) report
-	$(MAKE) docs
-	$(MAKE) sync
+all: code report docs sync
 
 ## Run code
 code:
