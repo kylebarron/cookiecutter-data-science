@@ -85,7 +85,7 @@ lit_review: writeup/pdf/lit_review.pdf writeup/docx/lit_review.docx writeup/html
 
 ## Generate documentation
 docs:
-	cd docs && $(MAKE)
+	cd docs && $(MAKE) all
 
 ## Sync project folder with Dropbox
 sync:
