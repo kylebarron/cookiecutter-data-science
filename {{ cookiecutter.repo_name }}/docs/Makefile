@@ -23,28 +23,26 @@ PANDOC_HTML_OPTS += --mathjax
 
 PANDOC_PDF_OPTS := $(PANDOC_OPTS) -V geometry:"margin=1.5in"
 
+# Documentation source files in order
+DOCS_SRC_FILES := src/index.md
+DOCS_SRC_FILES += src/glossary.md
+DOCS_SRC_FILES += src/references.md
+
 .PHONY: all docx pdf mkdocs-html pandoc-html
 
-all:
-	$(MAKE) pdf
-	$(MAKE) docx
-	$(MAKE) mkdocs-html
-	$(MAKE) pandoc-html
+all: pdf docx mkdocs-html pandoc-html
 
-pdf:
-	$(MAKE) pdf/documentation.pdf
+pdf: pdf/documentation.pdf
 
-docx:
-	$(MAKE) docx/documentation.docx
+docx: docx/documentation.docx
 
-mkdocs-html:
-	$(MAKE) html/mkdocs/index.html
+mkdocs-html: html/mkdocs/index.html
 
-pandoc-html:
-	$(MAKE) html/documentation.html
+pandoc-html: html/documentation.html
 
-pdf/documentation.pdf: $(shell find src -name '*.md') ../bibliography.bib
-	pandoc src/index.md src/glossary.md src/references.md \
+pdf/documentation.pdf: $(DOCS_SRC_FILES) $(PROJECT_DIR)/bibliography.bib
+	pandoc \
+	 	$(DOCS_SRC_FILES) \
 		-o pdf/documentation.pdf \
 		-V title:"{{ cookiecutter.project_name }}" \
 		$(PANDOC_PDF_OPTS)
@@ -52,8 +50,9 @@ pdf/documentation.pdf: $(shell find src -name '*.md') ../bibliography.bib
 	rclone sync pdf/documentation.pdf {{ cookiecutter.rclone_remote_path }}/docs/pdf/
 	{% endif %}
 
-docx/documentation.docx: $(shell find src -name '*.md') ../bibliography.bib
-	pandoc src/index.md src/glossary.md src/references.md \
+docx/documentation.docx: $(DOCS_SRC_FILES) $(PROJECT_DIR)/bibliography.bib
+	pandoc \
+	 	$(DOCS_SRC_FILES) \
 		-o docx/documentation.docx \
 		-V title:"{{ cookiecutter.project_name }}" \
 		$(PANDOC_OPTS)
@@ -61,14 +60,15 @@ docx/documentation.docx: $(shell find src -name '*.md') ../bibliography.bib
 	rclone sync docx/documentation.docx {{ cookiecutter.rclone_remote_path }}/docs/docx/
 	{% endif %}
 
-html/mkdocs/index.html: $(shell find src) ../bibliography.bib
+html/mkdocs/index.html: $(shell find src) $(PROJECT_DIR)/bibliography.bib
 	mkdocs build
 	{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
 	rclone sync html/mkdocs/ {{ cookiecutter.rclone_remote_path }}/docs/html/mkdocs/
 	{% endif %}
 
-html/documentation.html: $(shell find src) ../bibliography.bib
-	pandoc src/index.md src/glossary.md src/references.md \
+html/documentation.html: $(DOCS_SRC_FILES) $(PROJECT_DIR)/bibliography.bib
+	pandoc \
+	 	$(DOCS_SRC_FILES) \
 		-o html/documentation.html \
 		-V title:"{{ cookiecutter.project_name }}" \
 		$(PANDOC_HTML_OPTS)
