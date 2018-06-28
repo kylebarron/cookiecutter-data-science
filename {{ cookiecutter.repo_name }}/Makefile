@@ -8,7 +8,7 @@ PROJECT_NAME := {{ cookiecutter.repo_name }}
 DATA_DIR := $(PROJECT_DIR)/data
 
 EVAL_GLOBALS := PROJECT_DIR=$(PROJECT_DIR) DATA_DIR=$(DATA_DIR)
-RUN_STATA := $(EVAL_GLOBALS) bash $(PROJECT_DIR)/lib/statab.sh
+RUN_STATA := $(EVAL_GLOBALS) bash $(PROJECT_DIR)/lib/statab.sh do
 RUN_PYTHON := $(EVAL_GLOBALS) python
 
 PANDOC_INCLUDE := perl -ne 's/^\[(.+)\].*/`cat $1`/e;print'
@@ -77,7 +77,7 @@ emails:
 	cd admin/emails && python download_emails.py
 
 ## Generate report
-report:
+report: writeup/pdf/report.pdf writeup/docx/report.docx writeup/html/report.html
 	@echo "Generating report"
 
 ## Generate literature review
@@ -88,8 +88,8 @@ docs:
 	cd docs && $(MAKE) all
 
 ## Sync project folder with Dropbox
-sync:
-	rclone sync . {{ cookiecutter.rclone_remote_path }} \
+sync: local/bin/rclone
+	./local/bin/rclone sync . {{ cookiecutter.rclone_remote_path }} \
 		--exclude ".git/**" \
 		--exclude "data/**" \
 		--exclude "admin/emails/**" \
@@ -101,17 +101,17 @@ sync:
 
 writeup/pdf/report.pdf: writeup/src/report.md bibliography.bib
 	pandoc writeup/src/report.md -o writeup/pdf/report.pdf \
-	-V title:"{{ cookiecutter.project_name }} Literature Review" \
+	-V title:"{{ cookiecutter.project_name }}" \
 	$(PANDOC_PDF_OPTS)
 
 writeup/docx/report.docx: writeup/src/report.md bibliography.bib
 	pandoc writeup/src/report.md -o writeup/docx/report.docx \
-	-V title:"{{ cookiecutter.project_name }} Literature Review" \
+	-V title:"{{ cookiecutter.project_name }}" \
 	$(PANDOC_OPTS)
 
 writeup/html/report.html: writeup/src/report.md bibliography.bib
 	pandoc writeup/src/report.md -o writeup/html/report.html \
-	-V title:"{{ cookiecutter.project_name }} Literature Review" \
+	-V title:"{{ cookiecutter.project_name }}" \
 	$(PANDOC_HTML_OPTS)
 
 
