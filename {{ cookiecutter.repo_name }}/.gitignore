@@ -8,6 +8,7 @@
 # out/20/fig/image.pdf
 # out/20/fig/more/directories/image.pdf
 out/**/fig/**/*.pdf
+out/**/fig/**/*.png
 
 data/
 local/
