@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-PROJECT_DIR := "$(shell cd ../ && pwd -P)"
+PROJECT_DIR := $(shell cd ../ && pwd -P)
 
 PANDOC_INCLUDE := perl -ne 's/^\[(.+)\].*/`cat $1`/e;print'
 
