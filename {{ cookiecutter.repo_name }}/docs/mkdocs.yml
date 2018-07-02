@@ -35,6 +35,8 @@ extra_javascript:
     - aux/helpers.js
     - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 
+# These extensions are chosen to be a superset of Pandoc's Markdown
+# https://pandoc.org/MANUAL.html
 markdown_extensions:
     - admonition
     - codehilite
@@ -44,8 +46,14 @@ markdown_extensions:
     - footnotes
     - meta
     - pymdownx.arithmatex
+    - pymdownx.caret:
+        insert: false
     - pymdownx.details
+    - pymdownx.magiclink:
+        hide_protocol: true
+        repo_url_shortener: true
     - pymdownx.smartsymbols
+    - pymdownx.superfences
     - pymdownx.tasklist(custom_checkbox=true)
     - pymdownx.tilde
     - toc:
