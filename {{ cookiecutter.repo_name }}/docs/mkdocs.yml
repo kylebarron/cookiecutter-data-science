@@ -37,8 +37,10 @@ extra_javascript:
 
 markdown_extensions:
     - admonition
-    - codehilite:
-        linenums: true
+    - codehilite
+# For numbered code blocks, use the following instead:
+# - codehilite:
+#     linenums: true
     - footnotes
     - meta
     - pymdownx.arithmatex
