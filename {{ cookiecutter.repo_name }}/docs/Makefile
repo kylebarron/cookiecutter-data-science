@@ -30,15 +30,26 @@ DOCS_SRC_FILES += src/references.md
 
 .PHONY: all docx pdf mkdocs-html pandoc-html
 
+## Compile everything
 all: pdf docx mkdocs-html pandoc-html
 
+## Generate PDF documentation
 pdf: pdf/documentation.pdf
 
+## Generate Word documentation
 docx: docx/documentation.docx
 
+## Generate HTML documentation using Mkdocs
 mkdocs-html: html/mkdocs/index.html
 
+## Generate HTML documentation using Pandoc
 pandoc-html: html/documentation.html
+
+{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
+## Sync documentation with Dropbox
+sync:
+	rclone sync . {{ cookiecutter.rclone_remote_path }}/docs
+{% endif %}
 
 pdf/documentation.pdf: $(DOCS_SRC_FILES) $(PROJECT_DIR)/bibliography.bib
 	pandoc \
