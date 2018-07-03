@@ -48,43 +48,43 @@ pandoc-html: html/documentation.html
 {% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
 ## Sync documentation with Dropbox
 sync:
-	rclone sync . {{ cookiecutter.rclone_remote_path }}/docs
+	rclone sync . "{{ cookiecutter.rclone_remote_path }}/docs"
 {% endif %}
 
 pdf/documentation.pdf: $(DOCS_SRC_FILES) $(PROJECT_DIR)/bibliography.bib
 	pandoc \
 	 	$(DOCS_SRC_FILES) \
 		-o pdf/documentation.pdf \
-		-V title:"{{ cookiecutter.project_name }}" \
+		-V title:"{{ cookiecutter.project_name }} Documentation" \
 		$(PANDOC_PDF_OPTS)
 	{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
-	rclone sync pdf/documentation.pdf {{ cookiecutter.rclone_remote_path }}/docs/pdf/
+	rclone sync pdf/documentation.pdf "{{ cookiecutter.rclone_remote_path }}/docs/pdf/"
 	{% endif %}
 
 docx/documentation.docx: $(DOCS_SRC_FILES) $(PROJECT_DIR)/bibliography.bib
 	pandoc \
 	 	$(DOCS_SRC_FILES) \
 		-o docx/documentation.docx \
-		-V title:"{{ cookiecutter.project_name }}" \
+		-V title:"{{ cookiecutter.project_name }} Documentation" \
 		$(PANDOC_OPTS)
 	{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
-	rclone sync docx/documentation.docx {{ cookiecutter.rclone_remote_path }}/docs/docx/
+	rclone sync docx/documentation.docx "{{ cookiecutter.rclone_remote_path }}/docs/docx/"
 	{% endif %}
 
 html/mkdocs/index.html: $(shell find src) $(PROJECT_DIR)/bibliography.bib
 	mkdocs build
 	{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
-	rclone sync html/mkdocs/ {{ cookiecutter.rclone_remote_path }}/docs/html/mkdocs/
+	rclone sync html/mkdocs/ "{{ cookiecutter.rclone_remote_path }}/docs/html/mkdocs/"
 	{% endif %}
 
 html/documentation.html: $(DOCS_SRC_FILES) $(PROJECT_DIR)/bibliography.bib
 	pandoc \
 	 	$(DOCS_SRC_FILES) \
 		-o html/documentation.html \
-		-V title:"{{ cookiecutter.project_name }}" \
+		-V title:"{{ cookiecutter.project_name }} Documentation" \
 		$(PANDOC_HTML_OPTS)
 	{% if cookiecutter.use_rclone_to_sync_with_dropbox == "yes" %}
-	rclone sync html/documentation.html {{ cookiecutter.rclone_remote_path }}/docs/html/
+	rclone sync html/documentation.html "{{ cookiecutter.rclone_remote_path }}/docs/html/"
 	{% endif %}
 
 #################################################################################
