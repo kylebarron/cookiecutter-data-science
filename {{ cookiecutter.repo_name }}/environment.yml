@@ -37,13 +37,13 @@ dependencies:
     # R Dependencies
     - r
     - pip:
-        - git+https://github.com/kylebarron/gmail_download
-        - git+https://github.com/kylebarron/medicare_utils
+        - git+https://github.com/kylebarron/gmail_download#egg=gmail_download
+        - git+https://github.com/kylebarron/medicare_utils#egg=medicare_utils
         # Using pweave from my account is necessary so that Pweave exits with
         # return code 1 if the build didn't complete successfully. As of
         # 6/20/2018, this has not been merged back into main Pweave. See
         # https://github.com/mpastell/Pweave/issues/111
-        - git+https://github.com/kylebarron/pweave
+        - git+https://github.com/kylebarron/pweave#egg=pweave
         - mkdocs-material>=2.9.1
         - pymdown-extensions>=4.11
         - python-language-server>=0.19.0
