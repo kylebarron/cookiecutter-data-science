@@ -28,7 +28,7 @@ DOCS_SRC_FILES := src/index.md
 DOCS_SRC_FILES += src/glossary.md
 DOCS_SRC_FILES += src/references.md
 
-.PHONY: all docx pdf mkdocs-html pandoc-html
+.PHONY: all docx pdf mkdocs-html pandoc-html sync
 
 ## Compile everything
 all: pdf docx mkdocs-html pandoc-html
