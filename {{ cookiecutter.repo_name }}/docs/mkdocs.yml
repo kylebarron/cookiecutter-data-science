@@ -7,7 +7,7 @@ docs_dir: 'src'
 site_dir: 'html/mkdocs'
 
 # Repository
-repo_name: 'transfers'
+repo_name: '{{ cookiecutter.project_name }}'
 repo_url: '{{ cookiecutter.repo_url }}'
 edit_uri: 'blob/master/docs/src/'
 
