@@ -25,6 +25,7 @@ $ conda install cookiecutter -c conda-forge
 cookiecutter https://github.com/kylebarron/cookiecutter-data-science
 ```
 
+Note, `repo_name` must not have spaces.
 
 ### The resulting directory structure
 
