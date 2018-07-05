@@ -40,8 +40,9 @@ PANDOC_PDF_OPTS := $(PANDOC_OPTS) -V geometry:"margin=1.5in"
 .PHONY: clean dependencies
 
 ## Install development environment
-dependencies: local/miniconda/bin/python local/bin/rclone
-	./local/miniconda/bin/conda env create -f environment.yml
+dependencies: local/miniconda/bin/python
+dependencies: local/miniconda/envs/{{ cookiecutter.repo_name }}/.timestamp
+dependencies: local/bin/rclone
 
 ## Delete all compiled Python files
 clean:
@@ -53,6 +54,10 @@ local/miniconda/bin/python:
 	wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda3.sh
 	mkdir -p local
 	bash /tmp/miniconda3.sh -b -p local/miniconda
+
+local/miniconda/envs/{{ cookiecutter.repo_name }}/.timestamp:
+	./local/miniconda/bin/conda env create -f environment.yml
+	touch local/miniconda/envs/{{ cookiecutter.repo_name }}/.timestamp
 
 local/bin/rclone:
     wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -O /tmp/rclone.zip
