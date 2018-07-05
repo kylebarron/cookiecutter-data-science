@@ -39,7 +39,7 @@ PANDOC_PDF_OPTS := $(PANDOC_OPTS) -V geometry:"margin=1.5in"
 
 .PHONY: clean dependencies
 
-## Install Development Environment
+## Install development environment
 dependencies: local/miniconda/bin/python local/bin/rclone
 	./local/miniconda/bin/conda env create -f environment.yml
 
