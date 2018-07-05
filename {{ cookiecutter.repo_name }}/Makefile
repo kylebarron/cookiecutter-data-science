@@ -60,7 +60,7 @@ local/miniconda/envs/{{ cookiecutter.repo_name }}/.timestamp:
 	touch local/miniconda/envs/{{ cookiecutter.repo_name }}/.timestamp
 
 local/bin/rclone:
-    wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -O /tmp/rclone.zip
+	wget https://downloads.rclone.org/rclone-current-linux-amd64.zip -O /tmp/rclone.zip
 	mkdir -p local/bin/ local/share/
 	unzip -j /tmp/rclone.zip "rclone-v*-linux-amd64/rclone" -d local/bin/
 	unzip -j /tmp/rclone.zip "rclone-v*-linux-amd64/rclone.1" -d local/share/
