@@ -11,7 +11,7 @@ EVAL_GLOBALS := PROJECT_DIR=$(PROJECT_DIR) DATA_DIR=$(DATA_DIR)
 RUN_STATA := $(EVAL_GLOBALS) bash $(PROJECT_DIR)/lib/statab.sh do
 RUN_PYTHON := $(EVAL_GLOBALS) python
 
-PANDOC_INCLUDE := perl -ne 's/^\[(.+)\].*/`cat $1`/e;print'
+PANDOC_INCLUDE := perl -ne 's/^\[(.+)\].*/`cat $$1`/e;print'
 
 PANDOC_OPTS := -V author:"{{ cookiecutter.author_name }}"
 PANDOC_OPTS += -V date:"$(shell date +"%B %e, %Y")"
