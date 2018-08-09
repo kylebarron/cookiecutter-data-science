@@ -9,7 +9,7 @@ DATA_DIR := $(PROJECT_DIR)/data
 
 EVAL_GLOBALS := PROJECT_DIR=$(PROJECT_DIR) DATA_DIR=$(DATA_DIR)
 RUN_STATA := $(EVAL_GLOBALS) bash $(PROJECT_DIR)/lib/statab.sh do
-RUN_PYTHON := $(EVAL_GLOBALS) python
+RUN_PYTHON := $(EVAL_GLOBALS) python -u
 
 PANDOC_INCLUDE := perl -ne 's/^\[(.+)\].*/`cat $$1`/e;print'
 
