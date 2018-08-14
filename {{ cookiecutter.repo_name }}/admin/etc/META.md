@@ -1,8 +1,23 @@
 # Folder Structure
 
+## Overview
+
+The root of this repository is in `$main`. The basic layout is:
+
+- `admin`: Contains administrative stuff. Most notably `admin/emails` with
+    e-mail exchanges I was a part of that pertain to the project.
+- `code`: Contains the project main code.
+- `docs`: Contains documentation (including this)
+- `data`: Contains all project data
+- `lib`: Libraries and aux files that can be shared by all code.
+- `out`: Contains non-data output.
+- `writeup`: Contains drafts, write-ups, etc. to be shared.
+
+## Detailed Structure
+
 - `admin/` contains administrative stuff. Notably
     - `admin/calls/` records all calls/meetings I was a part of.
-    - `admin/emails/` contains all e-mail exchanges I was a part of that pertain to the project. Folders are named after the earliest e-mail in the thread they belong to: `YYYY-MM-DD - Subject`. Each file within those folders is an email in Markdown format, which is a plain text file that can be rendered as HTML, PDF, or DOCX (using [Pandoc](pandoc.org)).
+    - `admin/emails/` contains all e-mail exchanges I was a part of that pertain to the project. Folders are named after the earliest e-mail in the thread they belong to: `YYYY-MM-DD - Subject`. Each file within those folders is an email in Markdown format, which is a plain text file that can be rendered as HTML, PDF, or DOCX (using [Pandoc](https://pandoc.org)).
         - `download_emails.py` is a short script to download emails for a given query from Gmail. (This assumes your project emails are stored in Gmail, of course.) Set up the authentication using the instructions [here](https://github.com/kylebarron/gmail_download/blob/master/README.md).
     - `admin/project.log.md`, is a chronological account of events in the project. Though it is not a great practice, I often do not record events in this file and let my Git history speak for itself.
 - `tmp/` contains temporary files, as applicable.
